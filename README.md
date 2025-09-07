@@ -6,6 +6,12 @@ A comprehensive data processing pipeline built with CrewAI that automatically pr
 ## Apology/Disclaimer
 I could not keep up with the checkpoint commits as all the work I did was in the last few hours of the second day, my laptop had some issues
 so I had to wait till I got it back from the repair store.
+
+## Dataset
+The entire system is built to be data agnostic but I have tested the workflow on slices of the following few datasets:
+https://data.telangana.gov.in/dataset/haritha-haram
+https://data.telangana.gov.in/dataset/tgspdcl-agriculture-consumption-data
+https://data.telangana.gov.in/dataset/telangana-ground-water-department-water-level-data
 ## Overview
 
 This crew consists of 5 specialized agents that work together to process and analyze CSV data end-to-end:
@@ -15,6 +21,9 @@ This crew consists of 5 specialized agents that work together to process and ana
 3. **Cleaning Agent** - Removes duplicates, handles missing data, resolves errors
 4. **Transformation Agent** - Creates derived fields, aggregations, ratios, and reformatting
 5. **Analysis Agent** - Runs final analysis and produces a concise Markdown report
+
+## Demo Video
+  - [▶️ Watch the walkthrough](media/SubmissionVideo.mp4)
 
 ## Features
 
