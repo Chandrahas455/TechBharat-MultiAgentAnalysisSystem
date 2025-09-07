@@ -54,7 +54,7 @@ transformation_task:
 analysis_task:
   description: >
     Perform final analysis on the transformed data from {csv_file_path}. Consider the user context: {user_context}.
-    Summarize trends, correlations, gaps, and imbalances, and produce a concise Markdown report suitable for stakeholders.
+    Summarize trends, correlations, gaps, and imbalances, and produce a comprehensive and detailde Markdown report suitable for stakeholders.
     Plotting guidance: Inspect correlations and trends. Select up to two informative x/y pairs where either
     absolute correlation |r| >= 0.5 or the trend strength is strong. For each selected pair, CALL the plotting_tool
     with: file_path={csv_file_path}, x_column=<x>, y_column=<y>, title="<x> vs <y> (r=<value>)". If no pairs meet
