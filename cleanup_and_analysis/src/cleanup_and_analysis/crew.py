@@ -2,13 +2,33 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
+import os
+from dotenv import load_dotenv
+load_dotenv()
+GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
+
+# Import all tools
+from .tools import (
+    IngestionTool, DataValidationTool,
+    StandardizationTool, ColumnAnalysisTool,
+    CleaningTool, DataQualityTool,
+    TransformationTool, FeatureEngineeringTool,
+    InsightTool, PlottingTool
+)
+
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+
+    
+def print_output(task_output):
+    print("------------------")
+    print("Insight Task Output:")
+    print(task_output)
+    print("------------------")
 
 @CrewBase
 class CleanupAndAnalysis():
-    """CleanupAndAnalysis crew"""
+    """Data Processing and Analysis Crew"""
 
     agents: List[BaseAgent]
     tasks: List[Task]
@@ -20,38 +40,83 @@ class CleanupAndAnalysis():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def researcher(self) -> Agent:
+    def ingestion_agent(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
-            verbose=True
+            config=self.agents_config['ingestion_agent'], # type: ignore[index]
+            verbose=True,
+            tools=[IngestionTool(), DataValidationTool()]
         )
 
     @agent
-    def reporting_analyst(self) -> Agent:
+    def standardization_agent(self) -> Agent:
         return Agent(
-            config=self.agents_config['reporting_analyst'], # type: ignore[index]
-            verbose=True
+            config=self.agents_config['standardization_agent'], # type: ignore[index]
+            verbose=True,
+            tools=[StandardizationTool(), ColumnAnalysisTool()]
+        )
+
+    @agent
+    def cleaning_agent(self) -> Agent:
+        return Agent(
+            config=self.agents_config['cleaning_agent'], # type: ignore[index]
+            verbose=True,
+            tools=[CleaningTool(), DataQualityTool()]
+        )
+
+    @agent
+    def transformation_agent(self) -> Agent:
+        return Agent(
+            config=self.agents_config['transformation_agent'], # type: ignore[index]
+            verbose=True,
+            tools=[TransformationTool(), FeatureEngineeringTool()]
+        )
+
+    @agent
+    def analysis_agent(self) -> Agent:
+        return Agent(
+            config=self.agents_config['analysis_agent'], # type: ignore[index]
+            verbose=True,
+            tools=[InsightTool(), PlottingTool()]
         )
 
     # To learn more about structured task outputs,
     # task dependencies, and task callbacks, check out the documentation:
     # https://docs.crewai.com/concepts/tasks#overview-of-a-task
     @task
-    def research_task(self) -> Task:
+    def ingestion_task(self) -> Task:
         return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
+            config=self.tasks_config['ingestion_task'], # type: ignore[index]
         )
 
     @task
-    def reporting_task(self) -> Task:
+    def standardization_task(self) -> Task:
         return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
+            config=self.tasks_config['standardization_task'], # type: ignore[index]
         )
+
+    @task
+    def cleaning_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['cleaning_task'], # type: ignore[index]
+        )
+
+    @task
+    def transformation_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['transformation_task'], # type: ignore[index]
+        )
+
+    @task
+    def analysis_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['analysis_task'], # type: ignore[index]
+            output_file="report.md"
+        )
+
 
     @crew
     def crew(self) -> Crew:
-        """Creates the CleanupAndAnalysis crew"""
+        """Creates the Data Processing and Analysis crew"""
         # To learn how to add knowledge sources to your crew, check out the documentation:
         # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
 
