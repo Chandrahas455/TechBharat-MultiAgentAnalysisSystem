@@ -3,6 +3,9 @@
 
 A comprehensive data processing pipeline built with CrewAI that automatically processes CSV files through multiple specialized agents.
 
+## Apology/Disclaimer
+I could not keep up with the checkpoint commits as all the work I did was in the last few hours of the second day, my laptop had some issues
+so I had to wait till I got it back from the repair store.
 ## Overview
 
 This crew consists of 5 specialized agents that work together to process and analyze CSV data end-to-end:
