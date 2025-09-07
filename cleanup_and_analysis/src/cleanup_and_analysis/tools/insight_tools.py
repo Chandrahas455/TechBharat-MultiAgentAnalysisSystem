@@ -6,6 +6,7 @@ import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 class InsightToolInput(BaseModel):
     """Input schema for InsightTool."""
