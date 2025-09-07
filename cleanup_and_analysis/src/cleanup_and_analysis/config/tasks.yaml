@@ -1,17 +1,69 @@
-research_task:
+ingestion_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Ingest the CSV file from {csv_file_path} and perform comprehensive data validation. Consider the user context: {user_context}
+    Use the ingestion tools to load the data, analyze its structure, and identify any potential issues.
+    Provide a detailed overview of the dataset including shape, columns, data types, and sample data.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    A comprehensive data ingestion report including:
+    - Dataset shape and basic statistics
+    - Column names and data types
+    - Data validation results
+    - Sample data preview
+    - Any identified issues or warnings
+  agent: ingestion_agent
 
-reporting_task:
+standardization_task:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Standardize the ingested CSV data from {csv_file_path} by fixing column names, data formats, and units. Consider the user context: {user_context}
+    Use the standardization tools to analyze column issues and apply appropriate fixes.
+    Ensure all data follows consistent naming conventions and proper data types.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A standardized dataset with:
+    - Cleaned and standardized column names
+    - Proper data types (numeric, datetime, categorical)
+    - Consistent formatting across all columns
+    - Report of changes made during standardization
+  agent: standardization_agent
+
+cleaning_task:
+  description: >
+    Clean the standardized data from {csv_file_path} by removing duplicates, handling missing values, and resolving data quality issues. Consider the user context: {user_context}
+    Use the cleaning tools to identify and fix data quality problems while preserving data integrity.
+    Apply appropriate strategies for missing data based on the data characteristics.
+  expected_output: >
+    A cleaned dataset with:
+    - Duplicate rows removed
+    - Missing values handled appropriately
+    - Outliers identified and documented
+    - Data quality metrics and improvement report
+  agent: cleaning_agent
+
+transformation_task:
+  description: >
+    Transform the cleaned data from {csv_file_path} to make it easier to analyze by creating derived fields, aggregations, and reformatting. Consider the user context: {user_context}
+    Use the transformation tools to engineer new features and restructure data for optimal analysis.
+    Focus on creating meaningful derived variables that enhance analytical value.
+  expected_output: >
+    A transformed dataset with:
+    - New derived features and calculated fields
+    - Aggregated data where appropriate
+    - Enhanced data structure for analysis
+    - Report of transformations applied
+  agent: transformation_agent
+
+analysis_task:
+  description: >
+    Perform final analysis on the transformed data from {csv_file_path}. Consider the user context: {user_context}.
+    Summarize trends, correlations, gaps, and imbalances, and produce a concise Markdown report suitable for stakeholders.
+    Plotting guidance: Inspect correlations and trends. Select up to two informative x/y pairs where either
+    absolute correlation |r| >= 0.5 or the trend strength is strong. For each selected pair, CALL the plotting_tool
+    with: file_path={csv_file_path}, x_column=<x>, y_column=<y>, title="<x> vs <y> (r=<value>)". If no pairs meet
+    the threshold, pick the single top positive correlation (if any) and plot that. Never create more than two plots.
+  expected_output: >
+    A single Markdown report with:
+    - Dataset overview and quality summary
+    - Key trends and correlations
+    - Notable patterns, gaps, and imbalances
+    - Clear, actionable recommendations
+  agent: analysis_agent
+
